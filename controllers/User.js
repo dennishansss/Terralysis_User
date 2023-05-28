@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import User_Google from '../models/User_Google.js';
 
 // Validasi email
 const validateEmail = (email) => {
@@ -35,10 +36,31 @@ export const register = async (req, res) => {
   }
 };
 
-export const registerGoogle = (req, res) => {
-  // Proses register user menggunakan email Google
-  return res.json({
-    error: false,
-    message: 'Register success via Google',
-  });
+export const registerGoogle = async (req, res) => {
+  const { name, email } = req.body;
+
+  // Validasi email
+  if (!validateEmail(email)) {
+    return res.status(400).json({
+      error: true,
+      message: 'Invalid email format',
+    });
+  }
+
+  try {
+    // Simpan user ke database
+    const user = await User_Google.create({ name, email });
+
+    return res.json({
+      error: false,
+      message: 'Register success via Google',
+      user,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      error: true,
+      message: 'Internal server error',
+    });
+  }
 };
