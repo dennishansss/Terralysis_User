@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 import User_Google from '../models/User_Google.js';
 
@@ -19,8 +20,25 @@ export const register = async (req, res) => {
   }
 
   try {
+    // Cek apakah email sudah terdaftar sebelumnya
+    const existingUser = await User.findOne({ where: { email } });
+
+    if (existingUser) {
+      return res.status(409).json({
+        error: true,
+        message: 'Email already registered',
+      });
+    }
+
+    // Enkripsi password menggunakan bcrypt
+    const hashedPassword = await bcrypt.hash(password, 10);
+
     // Simpan user ke database
-    const user = await User.create({ name, email, password });
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
 
     return res.json({
       error: false,
@@ -31,7 +49,7 @@ export const register = async (req, res) => {
     console.error(error);
     return res.status(500).json({
       error: true,
-      message: 'Internal server error',
+      message: 'An error occurred during registration',
     });
   }
 };
@@ -48,6 +66,16 @@ export const registerGoogle = async (req, res) => {
   }
 
   try {
+    // Cek apakah email sudah terdaftar sebelumnya
+    const existingUser = await User_Google.findOne({ where: { email } });
+
+    if (existingUser) {
+      return res.status(409).json({
+        error: true,
+        message: 'Email already registered',
+      });
+    }
+
     // Simpan user ke database
     const user = await User_Google.create({ name, email });
 

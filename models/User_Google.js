@@ -19,7 +19,7 @@ const User_Google = sequelize.define('User_Google', {
   },
 });
 
-// Sebelum menyimpan data pengguna ke dalam database, generasi userId unik
+// Generate userId unik sebelum simpan data
 User_Google.beforeCreate((user_google) => {
   user_google.userId = uuidv4();
 });

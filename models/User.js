@@ -23,7 +23,7 @@ const User = sequelize.define('User', {
   },
 });
 
-// Sebelum menyimpan data pengguna ke dalam database, generasi userId unik
+// Generate userId unik sebelum simpan data
 User.beforeCreate((user) => {
   user.userId = uuidv4();
 });
