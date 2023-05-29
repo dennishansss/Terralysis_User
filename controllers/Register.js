@@ -8,7 +8,7 @@ const validateEmail = (email) => {
   return emailRegex.test(email);
 };
 
-export const register = async (req, res) => {
+export const registerController = async (req, res) => {
   const { name, email, password } = req.body;
 
   // Validasi email
@@ -54,7 +54,7 @@ export const register = async (req, res) => {
   }
 };
 
-export const registerGoogle = async (req, res) => {
+export const registerGoogleController = async (req, res) => {
   const { name, email } = req.body;
 
   // Validasi email

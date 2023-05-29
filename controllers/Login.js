@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import configJWT from '../config/Config.js';
 
-export const login = async (req, res) => {
+export const loginController = async (req, res) => {
   const { email, password } = req.body;
 
   // Cari pengguna dengan email yang cocok
@@ -44,7 +44,7 @@ export const login = async (req, res) => {
   });
 };
 
-export const loginGoogle = (req, res) => {
+export const loginGoogleController = (req, res) => {
   const { email } = req.body;
 
   // Cari pengguna dengan email yang cocok
